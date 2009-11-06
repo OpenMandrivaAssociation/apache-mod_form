@@ -6,7 +6,7 @@
 Summary:	DSO module for the apache web server
 Name:		apache-%{mod_name}
 Version:	0
-Release:	%mkrel 12
+Release:	%mkrel 13
 Group:		System/Servers
 License:	GPL
 URL:		http://apache.webthing.com/mod_form/
@@ -16,6 +16,10 @@ Source0:	http://apache.webthing.com/svn/apache/filters/xmlns/mod_form.c
 Source1:	http://apache.webthing.com/svn/apache/filters/xmlns/mod_form.h
 Source2:	README.mod_form
 Source3:	%{mod_conf}
+# preserve r->args (apr_strtok is
+# destructive in this regard). Makes mod_autoindex work again in
+# conjunction with directories where FormGET is enabled.
+Patch0:         mod_form.c.preserve_args.patch
 Requires(pre): rpm-helper
 Requires(postun): rpm-helper
 Requires(pre):	apache-conf >= 2.2.0
@@ -50,6 +54,7 @@ This package contains the development API for the mod_form apache module.
 
 cp %{SOURCE0} %{mod_name}.c
 cp %{SOURCE1} %{mod_name}.h
+%patch0
 cp %{SOURCE2} README
 cp %{SOURCE3} %{mod_conf}
 
