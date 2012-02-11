@@ -6,7 +6,7 @@
 Summary:	DSO module for the apache web server
 Name:		apache-%{mod_name}
 Version:	0
-Release:	%mkrel 16
+Release:	%mkrel 17
 Group:		System/Servers
 License:	GPL
 URL:		http://apache.webthing.com/mod_form/
