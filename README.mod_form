@@ -1,0 +1,75 @@
+mod_form
+
+   mod_form  is  a  utility  to  decode data submitted from Web forms. It
+   deals  with both GET and POST methods where the data are encoded using
+   the  default  content  type application/x-www-form-urlencoded. It does
+   not  decode  multipart/form-data  (file  upload)  forms: for those you
+   should use mod_upload.
+
+Usage
+
+   When mod_form is active, form data will be decoded to an apr_table_t*.
+   Modules can access the table using the optional function form_data, or
+   individual form fields using form_value:
+#include "mod_form.h"
+
+some_func(request_rec* r) {
+  apr_table_t* (*form_vars)(request_rec*) ;
+  apr_table_t* (*form_lookup)(request_rec*, const char*) ;
+  apr_table_t* form_data ;
+  const char* val ;
+  const char* key = "some-form-field" ;
+
+  /* get the whole table */
+  form_vars = APR_RETRIEVE_OPTIONAL_FN(form_data) ;
+  if ( form_vars ) {
+    form_data = form_vars(r) ;
+  }
+
+  /* or get individual values */
+  form_lookup = APR_RETRIEVE_OPTIONAL_FN(form_value) ;
+  if ( form_lookup ) {
+    val = form_lookup(r, key) ;
+  }
+}
+
+Multiple values
+
+   A  form field such as <select multiple> can return multiple values for
+   a  field.  mod_form  deals  with  these  by  concatenating  them  in a
+   comma-separated value.
+
+Configuration
+
+   mod_form uses four very simple configuration directives:
+
+   FormGET On|Off
+          Determines whether forms submitted by GET will be decoded.
+
+   FormPOST On|Off
+          Determines whether forms submitted by POST will be decoded.
+
+   FormMaxSize nnnn
+          If  set,  this  limits  the  maximum size of data mod_form will
+          accept.  If  that is exceeded, an error will be returned to the
+          client and the request is aborted.
+
+   FormDelim delims
+          Form  fields  are  normally  separated by ampersand &. However,
+          when  using  GET  with  a  link rather than a form, some people
+          prefer  to use a different delimiter, usually semicolon ;. This
+          sets what character(s) will be treated as a delimiter.
+
+Caveat
+
+   mod_form  works  with  GET  but  is  largely  untested under POST, and
+   appears  to  have  problems with POST and HTTP Keepalive. That will be
+   fixed, but it's not currently a priority.
+
+Availability
+
+   mod_form.c  and  mod_form.h  source  code  is  available under the GNU
+   General Public License (GPL). As with other opensource modules, we can
+   consider alternative licenses by request.
+
+   Up * Home * Contact * Webﬁing * Apache
