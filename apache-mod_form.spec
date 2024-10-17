@@ -9,7 +9,7 @@ Version:	0
 Release:	18
 Group:		System/Servers
 License:	GPL
-URL:		http://apache.webthing.com/mod_form/
+URL:		https://apache.webthing.com/mod_form/
 # there is no official tar ball
 # http://apache.webthing.com/svn/apache/forms/mod_form.c
 Source0:	http://apache.webthing.com/svn/apache/filters/xmlns/mod_form.c
